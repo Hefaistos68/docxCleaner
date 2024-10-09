@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "docxCleaner": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\test.docx -lang en-GB"
+    }
+  }
+}
