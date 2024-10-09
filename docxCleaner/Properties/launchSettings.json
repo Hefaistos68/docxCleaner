@@ -2,7 +2,7 @@
   "profiles": {
     "docxCleaner": {
       "commandName": "Project",
-      "commandLineArgs": "..\\..\\..\\test.docx -lang en-GB -convertimages -noprivacy -company \"Vestas Wind Systems A/S\" -title \"None\""
+      "commandLineArgs": "..\\..\\..\\test.docx -lang en-GB -convertimages -noprivacy -company \"companyname\" -title \"None\""
     }
   }
 }

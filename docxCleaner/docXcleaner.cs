@@ -70,7 +70,7 @@ namespace docxCleaner
 					// get all files in the "customXml" folder
 					if (commandlineArgs.ContainsKey(KeyRemoveCustom))
 					{
-						ProcessCustomXmlFolder(archive);
+					ProcessCustomXmlFolder(archive);
 					}
 
 					if (commandlineArgs.ContainsKey(KeyStyles))
@@ -253,25 +253,25 @@ namespace docxCleaner
 
 					if (commandlineArgs.TryGetValue(KeyCompany, out string? company))
 					{
-						XmlNode? node = doc.SelectSingleNode("//ep:Company", nsmgr);
-						if (node != null)
-						{
+					XmlNode? node = doc.SelectSingleNode("//ep:Company", nsmgr);
+					if (node != null)
+					{
 							node.InnerText = company;
 
-							changed = true;
-						}
+						changed = true;
+					}
 					}
 
 					if (commandlineArgs.TryGetValue(KeyTitle, out string? title))
 					{
 						XmlNode? node = doc.SelectSingleNode("//ep:TitlesOfParts/vt:vector/vt:lpstr", nsmgr);
-						if (node != null)
-						{
+					if (node != null)
+					{
 							node.InnerText = title;
 
-							changed = true;
-						}
+						changed = true;
 					}
+				}
 				}
 
 				if (changed)
@@ -296,6 +296,7 @@ namespace docxCleaner
 				Console.WriteLine($"Found '{fileName}' file.");
 
 				// read file wordDocumentEntry as Xml document
+				bool changed = false;
 				XmlDocument doc = new XmlDocument();
 				XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
 				nsmgr.AddNamespace("cp", "http://schemas.openxmlformats.org/package/2006/metadata/core-properties");
@@ -311,31 +312,34 @@ namespace docxCleaner
 					if(commandlineArgs.TryGetValue(KeyTitle, out string? title))
 					{
 						node = doc.SelectSingleNode("//dc:title", nsmgr);
-						if (node != null)
-							node.InnerText = title;
+					if (node != null)
+						node.InnerText = title;
 					}
 
 					if (commandlineArgs.TryGetValue(KeyCreator, out string? creator))
 					{
-						node = doc.SelectSingleNode("//dc:creator", nsmgr);
-						if (node != null)
+					node = doc.SelectSingleNode("//dc:creator", nsmgr);
+					if (node != null)
 							node.InnerText = creator;
 					}
 
 					if(commandlineArgs.ContainsKey(KeyPrivacy))
 					{
-						node = doc.SelectSingleNode("//cp:lastModifiedBy", nsmgr);
-						if (node != null)
-							node.InnerText = string.Empty;
-						node = doc.SelectSingleNode("//cp:lastPrinted", nsmgr);
-						if (node != null)
-							node.InnerText = string.Empty;
-						node = doc.SelectSingleNode("//dcterms:created", nsmgr);
-						if (node != null)
-							node.InnerText = string.Empty;
-						node = doc.SelectSingleNode("//dcterms:modified", nsmgr);
-						if (node != null)
-							node.InnerText = string.Empty;
+					node = doc.SelectSingleNode("//cp:lastModifiedBy", nsmgr);
+					if (node != null)
+						node.InnerText = string.Empty;
+
+					node = doc.SelectSingleNode("//cp:lastPrinted", nsmgr);
+					if (node != null)
+						node.InnerText = string.Empty;
+
+					node = doc.SelectSingleNode("//dcterms:created", nsmgr);
+					if (node != null)
+						node.InnerText = string.Empty;
+
+					node = doc.SelectSingleNode("//dcterms:modified", nsmgr);
+					if (node != null)
+						node.InnerText = string.Empty;
 					}
 				}
 
@@ -571,21 +575,21 @@ namespace docxCleaner
 					// find a Default node for JPG extension, or insert a new one
 					if (commandlineArgs.ContainsKey(KeyCompress))
 					{
-						XmlNode? defaultNode = doc.SelectSingleNode("//ns:Default[@Extension='jpg']", nsmgr);
-						if (defaultNode == null)
-						{
-							// create a new Default content type node for JPG 
-							XmlElement newNode = doc.CreateElement("Default", "http://schemas.openxmlformats.org/package/2006/content-types");
-							newNode.SetAttribute("Extension", "jpg");
-							newNode.SetAttribute("ContentType", "image/jpeg");
+					XmlNode? defaultNode = doc.SelectSingleNode("//ns:Default[@Extension='jpg']", nsmgr);
+					if (defaultNode == null)
+					{
+						// create a new Default content type node for JPG 
+						XmlElement newNode = doc.CreateElement("Default", "http://schemas.openxmlformats.org/package/2006/content-types");
+						newNode.SetAttribute("Extension", "jpg");
+						newNode.SetAttribute("ContentType", "image/jpeg");
 
-							// append this node to the "Types" node
-							XmlNode typesNode = doc.SelectSingleNode("//ns:Types", nsmgr);
-							typesNode!.AppendChild(newNode);
+						// append this node to the "Types" node
+						XmlNode typesNode = doc.SelectSingleNode("//ns:Types", nsmgr);
+						typesNode!.AppendChild(newNode);
 
-							changed = true;
-						}
+						changed = true;
 					}
+				}
 				}
 
 				if (changed)
